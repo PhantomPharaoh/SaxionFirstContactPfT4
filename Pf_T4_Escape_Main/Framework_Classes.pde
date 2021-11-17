@@ -1,3 +1,11 @@
+//***********************************************
+//*       Saxion First Contact Project          *
+//*              ECM1V.Pf_Team_4                *
+//*               version 0.01                  *
+//*            authors Soma, Marvin             *
+//*                                             *
+//***********************************************
+
 import java.util.HashMap;
 
 class Scene{
@@ -16,7 +24,11 @@ class Scene{
 
     public void Clicked(){
         for (GameObject i : objects) {
-            i.Clicked();
+            if (mouseX >= i.position.x - i.size.x/2 && mouseX <= i.position.x + i.size.x/2){
+                if (mouseY >= i.position.y - i.size.y/2 && mouseY <= i.position.y + i.size.y/2){
+                    i.Clicked();
+                }
+            }
         }
     }
 
@@ -24,20 +36,47 @@ class Scene{
 
 class GameObject{
     public PVector position = new PVector(0,0);
+    public PVector size = new PVector(0,0);
     private PImage texture;
+    private PVector texture_size = new PVector(0,0);
 
     public void Update(){
-        imageMode(CENTER);
-        image(texture, position.x, position.y);
+
+        if (texture != null){
+            imageMode(CENTER);
+            if (texture_size.y == 0 || texture_size.y == 0){
+                image(texture, position.x, position.y);
+            }
+            else{
+                image(texture, position.x, position.y, texture_size.x, texture_size.y);
+            }
+        }
+        
+        if (debug){
+            fill(0, 0, 255, 50);
+            noStroke();
+            rect(position.x - size.x/2, position.y - size.y/2, size.x, size.y);
+        }
+
     }
 
     public void Clicked(){
     }
 
-    public GameObject(int pos_x, int pos_y, String texture_path){
+    public GameObject(int pos_x, int pos_y, int size_x, int size_y){
         position.x = pos_x;
         position.y = pos_y;
-        this.texture = loadImage(texture_path);
+        size.x = size_x;
+        size.y = size_y;
+    }
+
+    public void SetTexture(String image_path){
+        texture = loadImage(image_path);
+    }
+    public void SetTexture(String image_path, int size_x, int size_y){
+        texture = loadImage(image_path);
+        texture_size.x = size_x;
+        texture_size.y = size_y;
     }
 
 }
@@ -45,18 +84,26 @@ class GameObject{
 class SceneChanger extends GameObject{
     public String target_scene;
 
-    public SceneChanger(String target_scene, int pos_x, int pos_y, String texture_path){
-        super(pos_x, pos_y, texture_path);
+    public SceneChanger(String target_scene, int pos_x, int pos_y, int size_x, int size_y){
+        super(pos_x, pos_y, size_x, size_y);
         this.target_scene = target_scene;
     }
 
     @Override
     public void Clicked(){
-        if (mouseX > position.x - 50 && mouseX < position.x + 50){
-            if (mouseY > position.y - 50 && mouseY < position.y + 50){
-                scene_manager.ChangeScene(target_scene);
-            }
-        }
+        scene_manager.ChangeScene(target_scene);
+    }
+
+}
+
+class Collectable extends GameObject{
+    public Collectable(int pos_x, int pos_y, int size_x, int size_y){
+        super(pos_x, pos_y, size_x, size_y);
+    }
+
+    @Override
+    public void Clicked(){
+        
     }
 
 }

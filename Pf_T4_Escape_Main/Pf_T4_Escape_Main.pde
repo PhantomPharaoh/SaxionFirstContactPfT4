@@ -8,48 +8,60 @@
 
 SceneManager scene_manager = new SceneManager();
 
+boolean debug = true;
+
 void setup(){
-    size(800, 600);
+    size(1920, 1080);
+    fullScreen();
     frameRate(60);
 
-
     Scene wall_1 = new Scene("wall_1");
-    GameObject wall_1_sprite = new GameObject(width/2, height/2, "Assets/wall_1.png");
-    wall_1.objects.add(wall_1_sprite);
-    SceneChanger wall_1_arrow_l = new SceneChanger("wall_4", 100, 300, "Assets/arrow_left.png");
-    wall_1.objects.add(wall_1_arrow_l);
-    SceneChanger wall_1_arrow_r = new SceneChanger("wall_2", 700, 300, "Assets/arrow_right.png");
-    wall_1.objects.add(wall_1_arrow_r);
+    GameObject w1bg = new GameObject(width/2, height/2, 0, 0);
+    w1bg.SetTexture("Assets/walls1.png");
+    wall_1.objects.add(w1bg);
+    SceneChanger w1la = new SceneChanger("wall_4", 100, height/2, 50, 50);
+    w1la.SetTexture("Assets/arrow_left.png", 50, 50);
+    wall_1.objects.add(w1la);
+    SceneChanger w1ra = new SceneChanger("wall_2", 1820, height/2, 50, 50);
+    w1ra.SetTexture("Assets/arrow_right.png", 50, 50);
+    wall_1.objects.add(w1ra);
     scene_manager.AddScene(wall_1);
 
     Scene wall_2 = new Scene("wall_2");
-    GameObject wall_2_sprite = new GameObject(width/2, height/2, "Assets/wall_2.png");
-    wall_2.objects.add(wall_2_sprite);
-    SceneChanger wall_2_arrow_l = new SceneChanger("wall_1", 100, 300, "Assets/arrow_left.png");
-    wall_2.objects.add(wall_2_arrow_l);
-    SceneChanger wall_2_arrow_r = new SceneChanger("wall_3", 700, 300, "Assets/arrow_right.png");
-    wall_2.objects.add(wall_2_arrow_r);
+    GameObject w2bg = new GameObject(width/2, height/2, 0, 0);
+    w2bg.SetTexture("Assets/walls2.png");
+    wall_2.objects.add(w2bg);
+    SceneChanger w2la = new SceneChanger("wall_1", 100, height/2, 50, 50);
+    w2la.SetTexture("Assets/arrow_left.png", 50, 50);
+    wall_2.objects.add(w2la);
+    SceneChanger w2ra = new SceneChanger("wall_3", 1820, height/2, 50, 50);
+    w2ra.SetTexture("Assets/arrow_right.png", 50, 50);
+    wall_2.objects.add(w2ra);
     scene_manager.AddScene(wall_2);
-    
+
     Scene wall_3 = new Scene("wall_3");
-    GameObject wall_3_sprite = new GameObject(width/2, height/2, "Assets/wall_3.png");
-    wall_3.objects.add(wall_3_sprite);
-    SceneChanger wall_3_arrow_l = new SceneChanger("wall_2", 100, 300, "Assets/arrow_left.png");
-    wall_3.objects.add(wall_3_arrow_l);
-    SceneChanger wall_3_arrow_r = new SceneChanger("wall_4", 700, 300, "Assets/arrow_right.png");
-    wall_3.objects.add(wall_3_arrow_r);
+    GameObject w3bg = new GameObject(width/2, height/2, 0, 0);
+    w3bg.SetTexture("Assets/walls3.png");
+    wall_3.objects.add(w3bg);
+    SceneChanger w3la = new SceneChanger("wall_2", 100, height/2, 50, 50);
+    w3la.SetTexture("Assets/arrow_left.png", 50, 50);
+    wall_3.objects.add(w3la);
+    SceneChanger w3ra = new SceneChanger("wall_4", 1820, height/2, 50, 50);
+    w3ra.SetTexture("Assets/arrow_right.png", 50, 50);
+    wall_3.objects.add(w3ra);
     scene_manager.AddScene(wall_3);
 
     Scene wall_4 = new Scene("wall_4");
-    GameObject wall_4_sprite = new GameObject(width/2, height/2, "Assets/wall_4.png");
-    wall_4.objects.add(wall_4_sprite);
-    SceneChanger wall_4_arrow_l = new SceneChanger("wall_3", 100, 300, "Assets/arrow_left.png");
-    wall_4.objects.add(wall_4_arrow_l);
-    SceneChanger wall_4_arrow_r = new SceneChanger("wall_1", 700, 300, "Assets/arrow_right.png");
-    wall_4.objects.add(wall_4_arrow_r);
+    GameObject w4bg = new GameObject(width/2, height/2, 0, 0);
+    w4bg.SetTexture("Assets/walls4.png");
+    wall_4.objects.add(w4bg);
+    SceneChanger w4la = new SceneChanger("wall_3", 100, height/2, 50, 50);
+    w4la.SetTexture("Assets/arrow_left.png", 50, 50);
+    wall_4.objects.add(w4la);
+    SceneChanger w4ra = new SceneChanger("wall_1", 1820, height/2, 50, 50);
+    w4ra.SetTexture("Assets/arrow_right.png", 50, 50);
+    wall_4.objects.add(w4ra);
     scene_manager.AddScene(wall_4);
-
-
 
 }
 
