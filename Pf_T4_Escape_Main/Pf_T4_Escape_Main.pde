@@ -33,20 +33,20 @@ void setup(){
     
     Scene wall_3 = new Scene("wall_3");
     GameObject wall_3_sprite = new GameObject(width/2, height/2, "Assets/wall_3.png");
-    wall_2.objects.add(wall_3_sprite);
+    wall_3.objects.add(wall_3_sprite);
     SceneChanger wall_3_arrow_l = new SceneChanger("wall_2", 100, 300, "Assets/arrow_left.png");
-    wall_2.objects.add(wall_3_arrow_l);
+    wall_3.objects.add(wall_3_arrow_l);
     SceneChanger wall_3_arrow_r = new SceneChanger("wall_4", 700, 300, "Assets/arrow_right.png");
-    wall_2.objects.add(wall_3_arrow_r);
+    wall_3.objects.add(wall_3_arrow_r);
     scene_manager.AddScene(wall_3);
 
     Scene wall_4 = new Scene("wall_4");
     GameObject wall_4_sprite = new GameObject(width/2, height/2, "Assets/wall_4.png");
-    wall_2.objects.add(wall_4_sprite);
+    wall_4.objects.add(wall_4_sprite);
     SceneChanger wall_4_arrow_l = new SceneChanger("wall_3", 100, 300, "Assets/arrow_left.png");
-    wall_2.objects.add(wall_4_arrow_l);
+    wall_4.objects.add(wall_4_arrow_l);
     SceneChanger wall_4_arrow_r = new SceneChanger("wall_1", 700, 300, "Assets/arrow_right.png");
-    wall_2.objects.add(wall_4_arrow_r);
+    wall_4.objects.add(wall_4_arrow_r);
     scene_manager.AddScene(wall_4);
 
 

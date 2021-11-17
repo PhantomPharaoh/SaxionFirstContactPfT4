@@ -72,7 +72,6 @@ class SceneManager{
     public void ChangeScene(String target_scene_name){
         if (scenes.containsKey(target_scene_name)){
             current_scene_name = target_scene_name;
-            println("changed scene to " + target_scene_name);
         }
         else{
             println(target_scene_name + " scene not found");
