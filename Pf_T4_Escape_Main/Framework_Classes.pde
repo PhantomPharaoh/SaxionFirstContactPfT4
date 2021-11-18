@@ -1,7 +1,7 @@
 //***********************************************
 //*       Saxion First Contact Project          *
 //*              ECM1V.Pf_Team_4                *
-//*               version 0.003                 *
+//*               version 0.005                 *
 //*            authors Soma, Marvin             *
 //*                                             *
 //***********************************************
@@ -9,6 +9,7 @@
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ArrayList;
+import processing.sound.*;
 
 class Scene{
     public String name;
@@ -21,7 +22,7 @@ class Scene{
 
     public void Update(){
         if (marked_to_remove.size() > 0){
-            for (String i : marked_to_remove) {
+            for (String i : marked_to_remove){
                 RemoveObject(i);
             }
             marked_to_remove.clear();
@@ -36,13 +37,22 @@ class Scene{
         for (GameObject i : objects) {
             if (mouseX >= i.position.x - i.size.x/2 && mouseX <= i.position.x + i.size.x/2){
                 if (mouseY >= i.position.y - i.size.y/2 && mouseY <= i.position.y + i.size.y/2){
-                    if (i.item_needed == ""){
-                        i.Clicked();
+                    
+                    boolean are_conditions_met = true;
+                    for (String s : i.click_conditions){
+                        if (conditions.get(s) == false) are_conditions_met = false;
                     }
-                    else if (inventory.GetSelectedItem() != null){
-                        if (i.item_needed == inventory.GetSelectedItem().name) {
+
+                    if (are_conditions_met){
+                        if (i.item_needed == ""){
                             i.Clicked();
-                            inventory.RemoveSelectedItem();
+                        }
+                        else if (inventory.GetSelectedItem() != null){
+                            if (i.item_needed == inventory.GetSelectedItem().name) {
+                                i.item_needed = "";
+                                i.Clicked();
+                                inventory.RemoveSelectedItem();
+                            }
                         }
                     }
                 }
@@ -76,8 +86,9 @@ class GameObject{
     public PVector position = new PVector(0,0);
     public PVector size = new PVector(0,0);
     public PImage texture;
-    private PVector texture_size = new PVector(0,0);
+    public PVector texture_size = new PVector(0,0);
     public String item_needed = "";
+    public ArrayList<String> click_conditions = new ArrayList<String>();
 
     public void Update(){
 
@@ -123,6 +134,10 @@ class GameObject{
         item_needed = item_name;
     }
 
+    public void SetCondition(String condition){
+        this.click_conditions.add(condition);
+    }
+    
 }
 
 class SceneChanger extends GameObject{
@@ -206,9 +221,13 @@ class InventoryManager{
     }
 
     public void DrawInventory(){
-        fill(0);
+        fill(200);
         noStroke();
         rect(width/2-300, height-100, 600, 100);
+        if (selected_index != -1){
+            fill(100);
+            rect(width/2 + (selected_index-3)*100, height-100, 100, 100);
+        }
 
         imageMode(CORNER);
         for (int i = 0; i < items.size(); ++i) {
