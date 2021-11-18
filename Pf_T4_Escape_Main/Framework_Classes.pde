@@ -1,7 +1,7 @@
 //***********************************************
 //*       Saxion First Contact Project          *
 //*              ECM1V.Pf_Team_4                *
-//*               version 0.002                 *
+//*               version 0.003                 *
 //*            authors Soma, Marvin             *
 //*                                             *
 //***********************************************
@@ -39,8 +39,8 @@ class Scene{
                     if (i.item_needed == ""){
                         i.Clicked();
                     }
-                    else if (inventory.GetSelectedItem() != ""){
-                        if (i.item_needed == inventory.GetSelectedItem()) {
+                    else if (inventory.GetSelectedItem() != null){
+                        if (i.item_needed == inventory.GetSelectedItem().name) {
                             i.Clicked();
                             inventory.RemoveSelectedItem();
                         }
@@ -83,7 +83,7 @@ class GameObject{
 
         if (texture != null){
             imageMode(CENTER);
-            if (texture_size.y == 0 || texture_size.y == 0){
+            if (texture_size.x == 0 || texture_size.y == 0){
                 image(texture, position.x, position.y);
             }
             else{
@@ -184,25 +184,63 @@ class SceneManager{
 }
 
 class InventoryManager{
-    private HashMap<String, PImage> items = new HashMap<String, PImage>();
-    private String selected_key = "";
+    private ArrayList<InventoryItem> items = new ArrayList<InventoryItem>();
+    private int selected_index = -1;
 
     public void AddItem(String name, PImage texture){
-        items.put(name, texture);
+        items.add(new InventoryItem(name, texture));
     }
 
-    public String GetSelectedItem(){
-        return selected_key;
+    public InventoryItem GetSelectedItem(){
+        if (selected_index != -1){
+            return items.get(selected_index);
+        }
+        else{
+            return null;
+        }
     }
 
     public void RemoveSelectedItem(){
-        items.remove(selected_key);
-        selected_key = "";
+        items.remove(selected_index);
+        selected_index = -1;
     }
 
-    public void ListItems(){//only for testing purposes
-        for (Map.Entry<String, PImage> i : items.entrySet()){
-            println(i.getKey());
+    public void DrawInventory(){
+        fill(0);
+        noStroke();
+        rect(width/2-300, height-100, 600, 100);
+
+        imageMode(CORNER);
+        for (int i = 0; i < items.size(); ++i) {
+            image(items.get(i).texture, width/2 + (i-3)*100, height-100, 100, 100);
         }
+    }
+
+    public boolean IsInventoryClick(){
+        if (mouseY >= height-100){
+            if (mouseX >=  width/2 - 300 && mouseX <= width/2 + 300) {
+
+                for (int i = 0; i < 6; ++i) {
+                    if (mouseX >= width/2 + (i-3)*100 && mouseX <= width/2 + (i-3)*100 + 100){
+                        if (i < items.size()) selected_index = i;
+                        break;
+                    }
+                }
+
+                return true;
+            }
+        }
+        return false;
+    }
+
+}
+
+class InventoryItem{
+    public String name;
+    public PImage texture;
+
+    public InventoryItem(String name, PImage texture){
+        this.name = name;
+        this.texture = texture;
     }
 }

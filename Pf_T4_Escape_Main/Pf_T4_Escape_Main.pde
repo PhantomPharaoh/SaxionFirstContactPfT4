@@ -1,7 +1,7 @@
 //***********************************************
 //*       Saxion First Contact Project          *
 //*              ECM1V.Pf_Team_4                *
-//*               version 0.002                 *
+//*               version 0.003                 *
 //*            authors Soma, Marvin             *
 //*                                             *
 //***********************************************
@@ -16,24 +16,22 @@ void setup(){
     fullScreen();
     frameRate(60);
 
-    Scene s = new Scene("test_scene");
-    GameObject bg = new GameObject("bg", width/2, height/2, 0, 0);
-    bg.SetTexture("Assets/walls1.png");
-    s.AddObject(bg);
-    Collectable c = new Collectable("ar", 200, 200, 100, 100);
-    c.SetTexture("Assets/arrow_left.png");
-    s.AddObject(c);
-    scene_manager.AddScene(s);
+    //create scenes here
+
+
 
 }
 
 void draw(){
     scene_manager.GetCurrentScene().Update();
+    inventory.DrawInventory();
 }
 
 void mouseMoved() {
 }
 
 void mousePressed() {
-    scene_manager.GetCurrentScene().Clicked();
+    if (!inventory.IsInventoryClick()){
+        scene_manager.GetCurrentScene().Clicked();
+    }
 }
