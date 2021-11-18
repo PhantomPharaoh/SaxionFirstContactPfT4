@@ -11,7 +11,7 @@ SceneManager scene_manager = new SceneManager();
 boolean debug = true;
 
 void setup(){
-    size(1920, 1080);
+    //size(1920, 1080);
     fullScreen();
     frameRate(60);
 
