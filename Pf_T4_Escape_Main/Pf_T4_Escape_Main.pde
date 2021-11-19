@@ -1,7 +1,7 @@
 //***********************************************
 //*       Saxion First Contact Project          *
 //*              ECM1V.Pf_Team_4                *
-//*               version 0.006                 *
+//*               version 0.007                 *
 //*            authors Soma, Marvin             *
 //*                                             *
 //***********************************************
@@ -14,6 +14,17 @@ boolean debug = true;
 
 HashMap<String, Boolean> conditions = new HashMap<String, Boolean>();
 
+//-----
+//Timer -> update version 0.007
+int t = 0;                                //t starts with 0, this is the variable to be converted to the text
+int interval = 11;                        //duration, I'm not sure about this, but every time the countdown start, it will be reduced by 1
+int previous_t;                           //this variable is to compare the value of t, the scene only executes every seconds -> text me on discord, I'll explain using my voice
+String time;                              //varibale to store a Sring value and will be displayed using text()
+final String game_over = "GAME OVER";
+boolean time_is_running = true;           //program starts > true, becomes false if t = 0;
+boolean start_time = false;               //program starts > false, becomes true if mouseClicked() is called
+//-----
+
 void setup(){
     //size(1920, 1080);
     fullScreen();
@@ -21,7 +32,10 @@ void setup(){
 
     conditions.put("is_tube_broken", false);
     conditions.put("is_rat_fed", false);
-
+    
+    textSize(100);
+    textAlign(CENTER);
+    
     //create scenes here
     
     Scene green_tubes = new Scene("green_tubes");
@@ -198,8 +212,29 @@ void setup(){
 }
 
 void draw(){
-    scene_manager.GetCurrentScene().Update();
-    inventory.DrawInventory();
+ 
+    t = interval;  
+  
+    if (time_is_running & start_time == true) {     
+      
+      t = interval - int(millis()/1000);            //countdown starts if mouse is clicked and time is running
+      
+      if (previous_t != t) {                        //program only executes if previous_t value IS NOT the same with the value of t
+        scene_manager.GetCurrentScene().Update();
+        inventory.DrawInventory();
+      }
+      previous_t = t;
+      
+      time = nf(t, 3);                              //nf -> changes numeric values to String
+    
+      if (t == 0) {                                 //if time is 0, start_time becomes false, so the countdown will stop
+        start_time = false;
+        time_is_running = false;
+        time = game_over;                           //change the numeric text to 'GAME OVER' text
+      }
+    
+      text(time, width/2, 100);
+    }    
 }
 
 void mouseMoved() {
@@ -209,4 +244,8 @@ void mousePressed() {
     if (!inventory.IsInventoryClick()){
         scene_manager.GetCurrentScene().Clicked();
     }
+}
+
+void mouseClicked() {
+    start_time = true;                              //program starts = false > mouse is clicked > value changes to true
 }
