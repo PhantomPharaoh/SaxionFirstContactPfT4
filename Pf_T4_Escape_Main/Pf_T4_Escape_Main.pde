@@ -1,7 +1,7 @@
 //***********************************************
 //*       Saxion First Contact Project          *
 //*              ECM1V.Pf_Team_4                *
-//*               version 0.005                 *
+//*               version 0.006                 *
 //*            authors Soma, Marvin             *
 //*                                             *
 //***********************************************
@@ -10,7 +10,7 @@
 SceneManager scene_manager = new SceneManager();
 InventoryManager inventory = new InventoryManager();
 
-boolean debug = false;
+boolean debug = true;
 
 HashMap<String, Boolean> conditions = new HashMap<String, Boolean>();
 
@@ -20,6 +20,7 @@ void setup(){
     frameRate(60);
 
     conditions.put("is_tube_broken", false);
+    conditions.put("is_rat_fed", false);
 
     //create scenes here
     
@@ -85,6 +86,14 @@ void setup(){
     door_arrow_l.SetTexture("Assets/arrowleft.png", 50, 70);
     door.AddObject(door_arrow_l);
 
+    SceneChanger cabinet_lock = new SceneChanger("cabinet", "cabinet_lock", 1600, 870, 200, 200);
+    cabinet_lock.SetItemCondition("serum");
+    door.AddObject(cabinet_lock);
+
+    SceneChanger code_lock = new SceneChanger("win_screen", "code_lock", 780, 620, 100, 200);
+    code_lock.SetCondition("is_rat_fed");
+    door.AddObject(code_lock);
+
     scene_manager.AddScene(door);
 
     //-----
@@ -102,6 +111,16 @@ void setup(){
     SceneChanger desk_arrow_l = new SceneChanger("door", "desk_arrow_l", 100, height/2, 50, 70);
     desk_arrow_l.SetTexture("Assets/arrowleft.png", 50, 70);
     desk.AddObject(desk_arrow_l);
+
+    Collectable serum = new Collectable("serum", 700, 550, 150, 150);
+    serum.SetTexture("Assets/serum.png", 150, 150);
+    serum.SetItemTexture("Assets/syringe_filled.png");
+    serum.SetItemCondition("syringe_empty");
+    desk.AddObject(serum);
+
+    SceneChanger cage_lock = new SceneChanger("cage", "cage_lock", 250, 500, 200, 200);
+    cage_lock.SetItemCondition("key");
+    desk.AddObject(cage_lock);
 
     scene_manager.AddScene(desk);
 
@@ -123,15 +142,59 @@ void setup(){
 
     scene_manager.AddScene(operation_tools);
 
+    //----
 
+    Scene cabinet = new Scene("cabinet");
 
+    GameObject cabinet_bg = new GameObject("cabinet_bg", width/2, height/2, 0, 0);
+    cabinet_bg.SetTexture("Assets/cabinet.png");
+    cabinet.AddObject(cabinet_bg);
 
+    SceneChanger cabinet_arrow_d = new SceneChanger("door", "cabinet_arrow_d", width/2, height-200, 70, 50);
+    cabinet_arrow_d.SetTexture("Assets/arrowdown.png", 70, 50);
+    cabinet.AddObject(cabinet_arrow_d);
 
+    Collectable rat_food = new Collectable("rat_food", 600, 900, 300, 200);
+    rat_food.SetTexture("Assets/rat_food.png", 300, 200);
+    cabinet.AddObject(rat_food);
 
+    Collectable key = new Collectable("key", 1300, 950, 100, 100);
+    key.SetTexture("Assets/key.png", 100, 100);
+    cabinet.AddObject(key);
 
+    scene_manager.AddScene(cabinet);
 
-
+    //----
     
+    Scene cage = new Scene("cage");
+
+    GameObject cage_bg = new GameObject("cage_bg", width/2, height/2, 0, 0);
+    cage_bg.SetTexture("Assets/cage.png");
+    cage.AddObject(cage_bg);
+
+    SceneChanger cage_arrow_d = new SceneChanger("desk", "cage_arrow_d", width/2, height-200, 70, 50);
+    cage_arrow_d.SetTexture("Assets/arrowdown.png", 70, 50);
+    cage.AddObject(cage_arrow_d);
+
+    Rat rat = new Rat("rat", 700, 720, 150, 150);
+    rat.SetTexture("Assets/rat.png", 150, 150);
+    rat.SetItemCondition("rat_food");
+    cage.AddObject(rat);
+
+    scene_manager.AddScene(cage);
+
+    //----
+
+    Scene win_screen = new Scene("win_screen");
+
+    GameObject win_screen_bg = new GameObject("win_screen_bg", width/2, height/2, 0, 0);
+    win_screen_bg.SetTexture("Assets/win.png");
+    win_screen.AddObject(win_screen_bg);
+
+    scene_manager.AddScene(win_screen);
+
+
+
 }
 
 void draw(){

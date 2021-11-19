@@ -1,7 +1,7 @@
 //***********************************************
 //*       Saxion First Contact Project          *
 //*              ECM1V.Pf_Team_4                *
-//*               version 0.005                 *
+//*               version 0.006                 *
 //*            authors Soma, Marvin             *
 //*                                             *
 //***********************************************
@@ -89,6 +89,8 @@ class GameObject{
     public PVector texture_size = new PVector(0,0);
     public String item_needed = "";
     public ArrayList<String> click_conditions = new ArrayList<String>();
+    
+
 
     public void Update(){
 
@@ -130,6 +132,8 @@ class GameObject{
         texture_size.y = size_y;
     }
 
+    
+
     public void SetItemCondition(String item_name){
         item_needed = item_name;
     }
@@ -156,6 +160,8 @@ class SceneChanger extends GameObject{
 }
 
 class Collectable extends GameObject{
+    public PImage item_texture = null;
+
     public Collectable(String name, int pos_x, int pos_y, int size_x, int size_y){
         super(name, pos_x, pos_y, size_x, size_y);
     }
@@ -163,7 +169,13 @@ class Collectable extends GameObject{
     @Override
     public void Clicked(){
         scene_manager.GetCurrentScene().MarkForRemoval(name);
-        inventory.AddItem(name, texture);
+        if (item_texture != null) inventory.AddItem(name, item_texture);
+        else inventory.AddItem(name, texture);
+        
+    }
+
+    public void SetItemTexture(String image_path){
+        item_texture = loadImage(image_path);
     }
 
 }
