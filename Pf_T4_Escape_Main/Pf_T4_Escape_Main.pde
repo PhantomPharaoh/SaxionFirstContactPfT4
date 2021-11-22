@@ -1,7 +1,7 @@
 //***********************************************
 //*       Saxion First Contact Project          *
 //*              ECM1V.Pf_Team_4                *
-//*               version 0.007                 *
+//*               version 0.009                 *
 //*            authors Soma, Marvin             *
 //*                                             *
 //***********************************************
@@ -14,16 +14,6 @@ boolean debug = true;
 
 HashMap<String, Boolean> conditions = new HashMap<String, Boolean>();
 
-//-----
-//Timer -> update version 0.007
-int t = 0;                                //t starts with 0, this is the variable to be converted to the text
-int interval = 11;                        //duration, I'm not sure about this, but every time the countdown start, it will be reduced by 1
-int previous_t;                           //this variable is to compare the value of t, the scene only executes every seconds -> text me on discord, I'll explain using my voice
-String time;                              //varibale to store a Sring value and will be displayed using text()
-final String game_over = "GAME OVER";
-boolean time_is_running = true;           //program starts > true, becomes false if t = 0;
-boolean start_time = false;               //program starts > false, becomes true if mouseClicked() is called
-//-----
 
 void setup(){
     //size(1920, 1080);
@@ -37,6 +27,19 @@ void setup(){
     textAlign(CENTER);
     
     //create scenes here
+    Scene main_menu = new Scene("main_menu");                                                                          //add a main_menu Scene
+    
+    GameObject main_menu_bg = new GameObject("main_menu_bg", width/2, height/2, 0, 0);
+    main_menu_bg.SetTexture("Assets/wall_4.png");
+    main_menu.AddObject(main_menu_bg);
+    
+    SceneChanger button_play = new SceneChanger("green_tubes", "button_play", width/2, height-400, 360, 150);
+    button_play.SetTexture("Assets/button.png", 360, 150);
+    main_menu.AddObject(button_play);
+    
+    scene_manager.AddScene(main_menu);
+    
+    //-----
     
     Scene green_tubes = new Scene("green_tubes");
     
@@ -52,12 +55,13 @@ void setup(){
     green_tubes_arrow_l.SetTexture("Assets/arrowleft.png", 50, 70);
     green_tubes.AddObject(green_tubes_arrow_l);
 
-    Collectable syringe_empty = new Collectable("syringe_empty", 200, 700, 120, 120);
-    syringe_empty.SetTexture("Assets/syringe_empty.png", 120, 120);
+    Collectable syringe_empty = new Collectable("syringe_empty", 200, 700, 52, 100);
+    syringe_empty.SetTexture("Assets/syringe_empty.png", 52, 100);
+    syringe_empty.SetHoverText("An empty syringe…");
     syringe_empty.SetCondition("is_tube_broken");
     green_tubes.AddObject(syringe_empty);
 
-    Tube tube = new Tube("tube", 200, 700, 120, 120);
+    Tube tube = new Tube("tube", 200, 700, 52, 100);
     tube.SetItemCondition("hammer");
     green_tubes.AddObject(tube);
 
@@ -101,12 +105,17 @@ void setup(){
     door.AddObject(door_arrow_l);
 
     SceneChanger cabinet_lock = new SceneChanger("cabinet", "cabinet_lock", 1600, 870, 200, 200);
+    cabinet_lock.SetHoverText("This drawer can only be opened by a fingerprint… Maybe I can find another way to get through the lock…");    //add hover_text for drawer/cabinet(locked)
     cabinet_lock.SetItemCondition("serum");
     door.AddObject(cabinet_lock);
 
     SceneChanger code_lock = new SceneChanger("win_screen", "code_lock", 780, 620, 100, 200);
+    code_lock.SetHoverText("Hmm, I need to enter some sort of code here…");                                                                 //add hover_text for code_lock
     code_lock.SetCondition("is_rat_fed");
     door.AddObject(code_lock);
+    
+    SceneChanger glass_container_lock = new SceneChanger("glass_container", "glass_container_lock", 300, 400, 100, 100);
+    door.AddObject(glass_container_lock);
 
     scene_manager.AddScene(door);
 
@@ -126,8 +135,9 @@ void setup(){
     desk_arrow_l.SetTexture("Assets/arrowleft.png", 50, 70);
     desk.AddObject(desk_arrow_l);
 
-    Collectable serum = new Collectable("serum", 700, 550, 150, 150);
-    serum.SetTexture("Assets/serum.png", 150, 150);
+    Collectable serum = new Collectable("serum", 700, 550, 87, 100);
+    serum.SetTexture("Assets/serum.png", 87, 100);
+    serum.SetHoverText("How can I pour this acid in a safe way…?");                                                      //add hover_text serum/acid
     serum.SetItemTexture("Assets/syringe_filled.png");
     serum.SetItemCondition("syringe_empty");
     desk.AddObject(serum);
@@ -150,8 +160,9 @@ void setup(){
     operation_tools_arrow_d.SetTexture("Assets/arrowdown.png", 70, 50);
     operation_tools.AddObject(operation_tools_arrow_d);
 
-    Collectable hammer = new Collectable("hammer", 600, 500, 150, 150);
-    hammer.SetTexture("Assets/hammer.png", 150, 150);
+    Collectable hammer = new Collectable("hammer", 600, 500, 87, 100);
+    hammer.SetTexture("Assets/hammer.png", 87, 100);
+    hammer.SetHoverText("This definitely comes in handy!");                                                                                    //add hover_text hammer
     operation_tools.AddObject(hammer);
 
     scene_manager.AddScene(operation_tools);
@@ -168,12 +179,11 @@ void setup(){
     cabinet_arrow_d.SetTexture("Assets/arrowdown.png", 70, 50);
     cabinet.AddObject(cabinet_arrow_d);
 
-    Collectable rat_food = new Collectable("rat_food", 600, 900, 300, 200);
-    rat_food.SetTexture("Assets/rat_food.png", 300, 200);
-    cabinet.AddObject(rat_food);
+    //*REMOVED* rat_food collectable to gllas_container Scene
 
-    Collectable key = new Collectable("key", 1300, 950, 100, 100);
-    key.SetTexture("Assets/key.png", 100, 100);
+    Collectable key = new Collectable("key", 1300, 950, 77, 100);
+    key.SetTexture("Assets/key.png", 77, 100);
+    key.SetHoverText("Where there’s a key there’s a lock…");                                                                                //add hover_text for key
     cabinet.AddObject(key);
 
     scene_manager.AddScene(cabinet);
@@ -184,6 +194,7 @@ void setup(){
 
     GameObject cage_bg = new GameObject("cage_bg", width/2, height/2, 0, 0);
     cage_bg.SetTexture("Assets/cage.png");
+    cage_bg.SetHoverText("Looks like that rat is sitting on something…");                                                                    //add hover_text for cage(locked)
     cage.AddObject(cage_bg);
 
     SceneChanger cage_arrow_d = new SceneChanger("desk", "cage_arrow_d", width/2, height-200, 70, 50);
@@ -198,43 +209,38 @@ void setup(){
     scene_manager.AddScene(cage);
 
     //----
+    
+    Scene glass_container = new Scene("glass_container");                                                                                  //changes for rat_food location
+    
+    GameObject glass_container_bg = new GameObject("glass_container_bg", width/2, height/2, 0, 0);
+    glass_container_bg.SetTexture("Assets/glass_container.png");
+    glass_container.AddObject(glass_container_bg);
+    
+    Collectable rat_food = new Collectable("rat_food", 600, 900, 100, 64);
+    rat_food.SetTexture("Assets/rat_food.png", 100, 64);
+    rat_food.SetHoverText("This smells bad… Who would eat this?");                                                                              //add hover_text rat_food
+    glass_container.AddObject(rat_food);
+    
+    SceneChanger glass_container_arrow_d = new SceneChanger("door", "glass_container_arrow_d", width/2, height-200, 70, 50);
+    glass_container_arrow_d.SetTexture("Assets/arrowdown.png", 70, 50);
+    glass_container.AddObject(cabinet_arrow_d);
+    
+    scene_manager.AddScene(glass_container);
+    
+    //----
 
     Scene win_screen = new Scene("win_screen");
 
     GameObject win_screen_bg = new GameObject("win_screen_bg", width/2, height/2, 0, 0);
     win_screen_bg.SetTexture("Assets/win.png");
     win_screen.AddObject(win_screen_bg);
-
+    
     scene_manager.AddScene(win_screen);
-
-
-
 }
 
 void draw(){
- 
-    t = interval;  
-  
-    if (time_is_running & start_time == true) {     
-      
-      t = interval - int(millis()/1000);            //countdown starts if mouse is clicked and time is running
-      
-      if (previous_t != t) {                        //program only executes if previous_t value IS NOT the same with the value of t
         scene_manager.GetCurrentScene().Update();
         inventory.DrawInventory();
-      }
-      previous_t = t;
-      
-      time = nf(t, 3);                              //nf -> changes numeric values to String
-    
-      if (t == 0) {                                 //if time is 0, start_time becomes false, so the countdown will stop
-        start_time = false;
-        time_is_running = false;
-        time = game_over;                           //change the numeric text to 'GAME OVER' text
-      }
-    
-      text(time, width/2, 100);
-    }    
 }
 
 void mouseMoved() {
@@ -244,8 +250,4 @@ void mousePressed() {
     if (!inventory.IsInventoryClick()){
         scene_manager.GetCurrentScene().Clicked();
     }
-}
-
-void mouseClicked() {
-    start_time = true;                              //program starts = false > mouse is clicked > value changes to true
 }
