@@ -1,7 +1,7 @@
 //***********************************************
 //*       Saxion First Contact Project          *
 //*              ECM1V.Pf_Team_4                *
-//*               version 0.006                 *
+//*               version 0.008                 *
 //*            authors Soma, Marvin             *
 //*                                             *
 //***********************************************
@@ -213,6 +213,15 @@ class SceneManager{
 class InventoryManager{
     private ArrayList<InventoryItem> items = new ArrayList<InventoryItem>();
     private int selected_index = -1;
+    private PImage inventory_image;
+    private PImage textbox_image;
+    private PImage highlight_image;
+
+    public InventoryManager(){
+        inventory_image = loadImage("Assets/inventory.png");
+        textbox_image = loadImage("Assets/textbox.png");
+        highlight_image = loadImage("Assets/highlight.png");
+    }
 
     public void AddItem(String name, PImage texture){
         items.add(new InventoryItem(name, texture));
@@ -233,26 +242,24 @@ class InventoryManager{
     }
 
     public void DrawInventory(){
-        fill(200);
-        noStroke();
-        rect(width/2-300, height-100, 600, 100);
+        image(inventory_image, 1400, 1000);
+        image(textbox_image, 500, 1000);
         if (selected_index != -1){
-            fill(100);
-            rect(width/2 + (selected_index-3)*100, height-100, 100, 100);
+            image(highlight_image, 1605+selected_index*165, 1012);//these values are fine-tuned to fit the inventory
         }
 
-        imageMode(CORNER);
         for (int i = 0; i < items.size(); ++i) {
-            image(items.get(i).texture, width/2 + (i-3)*100, height-100, 100, 100);
+            image(items.get(i).texture, 1400+(i-2)*165, 1000, 70, 70);
         }
+
+        //rect(970, 910, 860, 170); // inventory hitbox
     }
 
     public boolean IsInventoryClick(){
-        if (mouseY >= height-100){
-            if (mouseX >=  width/2 - 300 && mouseX <= width/2 + 300) {
-
-                for (int i = 0; i < 6; ++i) {
-                    if (mouseX >= width/2 + (i-3)*100 && mouseX <= width/2 + (i-3)*100 + 100){
+        if (mouseY >= 910){
+            if (mouseX >=  970 && mouseX <= 1795) {
+                for (int i = 0; i < 5; ++i) {
+                    if (mouseX >= 970+i*165 && mouseX <= (970+i*165)+165){
                         if (i < items.size()) selected_index = i;
                         break;
                     }

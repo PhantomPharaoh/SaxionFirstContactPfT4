@@ -1,16 +1,16 @@
 //***********************************************
 //*       Saxion First Contact Project          *
 //*              ECM1V.Pf_Team_4                *
-//*               version 0.006                 *
+//*               version 0.008                 *
 //*            authors Soma, Marvin             *
 //*                                             *
 //***********************************************
 
 
-SceneManager scene_manager = new SceneManager();
-InventoryManager inventory = new InventoryManager();
+SceneManager scene_manager;
+InventoryManager inventory;
 
-boolean debug = true;
+boolean debug = false;
 
 HashMap<String, Boolean> conditions = new HashMap<String, Boolean>();
 
@@ -18,6 +18,9 @@ void setup(){
     //size(1920, 1080);
     fullScreen();
     frameRate(60);
+
+    scene_manager = new SceneManager();
+    inventory = new InventoryManager();
 
     conditions.put("is_tube_broken", false);
     conditions.put("is_rat_fed", false);
@@ -46,6 +49,38 @@ void setup(){
     Tube tube = new Tube("tube", 200, 700, 120, 120);
     tube.SetItemCondition("hammer");
     green_tubes.AddObject(tube);
+
+    //item sests
+
+    Collectable i1 = new Collectable("i1", 0, 0, 50, 50);
+    i1.SetTexture("Assets/key.png", 50, 50);
+    green_tubes.AddObject(i1);
+
+    Collectable i2 = new Collectable("i2", 60, 0, 50, 50);
+    i2.SetTexture("Assets/key.png", 50, 50);
+    green_tubes.AddObject(i2);
+
+    Collectable i3 = new Collectable("i3", 120, 0, 50, 50);
+    i3.SetTexture("Assets/key.png", 50, 50);
+    green_tubes.AddObject(i3);
+
+    Collectable i4 = new Collectable("i4", 180, 0, 50, 50);
+    i4.SetTexture("Assets/key.png", 50, 50);
+    green_tubes.AddObject(i4);
+
+    Collectable i5 = new Collectable("i5", 240, 0, 50, 50);
+    i5.SetTexture("Assets/key.png", 50, 50);
+    green_tubes.AddObject(i5);
+
+    Collectable i6 = new Collectable("i6", 300, 0, 50, 50);
+    i6.SetTexture("Assets/key.png", 50, 50);
+    green_tubes.AddObject(i6);
+
+    //end of item tests
+
+
+
+
 
     scene_manager.AddScene(green_tubes);
 
