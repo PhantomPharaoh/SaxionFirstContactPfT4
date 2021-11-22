@@ -1,7 +1,7 @@
 //***********************************************
 //*       Saxion First Contact Project          *
 //*              ECM1V.Pf_Team_4                *
-//*               version 0.008                 *
+//*               version 0.009                 *
 //*            authors Soma, Marvin             *
 //*                                             *
 //***********************************************
@@ -88,6 +88,7 @@ class GameObject{
     public PImage texture;
     public PVector texture_size = new PVector(0,0);
     public String item_needed = "";
+    public String hover_text = "";
     public ArrayList<String> click_conditions = new ArrayList<String>();
     
 
@@ -132,7 +133,9 @@ class GameObject{
         texture_size.y = size_y;
     }
 
-    
+    public void SetHoverText(String text){
+        hover_text = text;
+    }
 
     public void SetItemCondition(String item_name){
         item_needed = item_name;

@@ -1,7 +1,7 @@
 //***********************************************
 //*       Saxion First Contact Project          *
 //*              ECM1V.Pf_Team_4                *
-//*               version 0.008                 *
+//*               version 0.009                 *
 //*            authors Soma, Marvin             *
 //*                                             *
 //***********************************************
@@ -27,6 +27,20 @@ void setup(){
 
     //create scenes here
     
+    Scene main_menu = new Scene("main_menu");                                                                          //add a main_menu Scene
+
+    GameObject main_menu_bg = new GameObject("main_menu_bg", width/2, height/2, 0, 0);
+    main_menu_bg.SetTexture("Assets/wall_4.png");
+    main_menu.AddObject(main_menu_bg);
+
+    SceneChanger button_play = new SceneChanger("green_tubes", "button_play", width/2, height-400, 360, 150);
+    button_play.SetTexture("Assets/button.png", 360, 150);
+    main_menu.AddObject(button_play);
+
+    scene_manager.AddScene(main_menu);
+
+    //-----
+
     Scene green_tubes = new Scene("green_tubes");
     
     GameObject green_tubes_bg = new GameObject("green_tubes_bg", width/2, height/2, 0, 0);
@@ -41,17 +55,18 @@ void setup(){
     green_tubes_arrow_l.SetTexture("Assets/arrowleft.png", 50, 70);
     green_tubes.AddObject(green_tubes_arrow_l);
 
-    Collectable syringe_empty = new Collectable("syringe_empty", 200, 700, 120, 120);
-    syringe_empty.SetTexture("Assets/syringe_empty.png", 120, 120);
+     Collectable syringe_empty = new Collectable("syringe_empty", 200, 700, 52, 100);
+    syringe_empty.SetTexture("Assets/syringe_empty.png", 52, 100);
+    syringe_empty.SetHoverText("An empty syringe…");
     syringe_empty.SetCondition("is_tube_broken");
     green_tubes.AddObject(syringe_empty);
 
-    Tube tube = new Tube("tube", 200, 700, 120, 120);
+    Tube tube = new Tube("tube", 200, 700, 52, 100);
     tube.SetItemCondition("hammer");
     green_tubes.AddObject(tube);
 
     //item sests
-
+/*
     Collectable i1 = new Collectable("i1", 0, 0, 50, 50);
     i1.SetTexture("Assets/key.png", 50, 50);
     green_tubes.AddObject(i1);
@@ -75,7 +90,7 @@ void setup(){
     Collectable i6 = new Collectable("i6", 300, 0, 50, 50);
     i6.SetTexture("Assets/key.png", 50, 50);
     green_tubes.AddObject(i6);
-
+*/
     //end of item tests
 
 
@@ -123,11 +138,16 @@ void setup(){
 
     SceneChanger cabinet_lock = new SceneChanger("cabinet", "cabinet_lock", 1600, 870, 200, 200);
     cabinet_lock.SetItemCondition("serum");
+    cabinet_lock.SetHoverText("This drawer can only be opened by a fingerprint… Maybe I can find another way to get through the lock…");    //add hover_text for drawer/cabinet(locked)
     door.AddObject(cabinet_lock);
 
     SceneChanger code_lock = new SceneChanger("win_screen", "code_lock", 780, 620, 100, 200);
+    code_lock.SetHoverText("Hmm, I need to enter some sort of code here…");  
     code_lock.SetCondition("is_rat_fed");
     door.AddObject(code_lock);
+
+    SceneChanger glass_container_lock = new SceneChanger("glass_container", "glass_container_lock", 300, 400, 100, 100);
+    door.AddObject(glass_container_lock);
 
     scene_manager.AddScene(door);
 
@@ -147,8 +167,9 @@ void setup(){
     desk_arrow_l.SetTexture("Assets/arrowleft.png", 50, 70);
     desk.AddObject(desk_arrow_l);
 
-    Collectable serum = new Collectable("serum", 700, 550, 150, 150);
-    serum.SetTexture("Assets/serum.png", 150, 150);
+    Collectable serum = new Collectable("serum", 700, 550, 87, 100);
+    serum.SetTexture("Assets/serum.png", 87, 100);
+    serum.SetHoverText("How can I pour this acid in a safe way…?"); 
     serum.SetItemTexture("Assets/syringe_filled.png");
     serum.SetItemCondition("syringe_empty");
     desk.AddObject(serum);
@@ -171,8 +192,9 @@ void setup(){
     operation_tools_arrow_d.SetTexture("Assets/arrowdown.png", 70, 50);
     operation_tools.AddObject(operation_tools_arrow_d);
 
-    Collectable hammer = new Collectable("hammer", 600, 500, 150, 150);
-    hammer.SetTexture("Assets/hammer.png", 150, 150);
+    Collectable hammer = new Collectable("hammer", 600, 500, 87, 100);
+    hammer.SetTexture("Assets/hammer.png", 87, 100);
+    hammer.SetHoverText("This definitely comes in handy!");
     operation_tools.AddObject(hammer);
 
     scene_manager.AddScene(operation_tools);
@@ -188,13 +210,14 @@ void setup(){
     SceneChanger cabinet_arrow_d = new SceneChanger("door", "cabinet_arrow_d", width/2, height-200, 70, 50);
     cabinet_arrow_d.SetTexture("Assets/arrowdown.png", 70, 50);
     cabinet.AddObject(cabinet_arrow_d);
-
+    /*
     Collectable rat_food = new Collectable("rat_food", 600, 900, 300, 200);
     rat_food.SetTexture("Assets/rat_food.png", 300, 200);
-    cabinet.AddObject(rat_food);
+    cabinet.AddObject(rat_food);*///*REMOVED* rat_food collectable to gllas_container Scene
 
-    Collectable key = new Collectable("key", 1300, 950, 100, 100);
-    key.SetTexture("Assets/key.png", 100, 100);
+    Collectable key = new Collectable("key", 1300, 950, 77, 100);
+    key.SetTexture("Assets/key.png", 77, 100);
+    key.SetHoverText("Where there’s a key there’s a lock…");
     cabinet.AddObject(key);
 
     scene_manager.AddScene(cabinet);
@@ -213,10 +236,30 @@ void setup(){
 
     Rat rat = new Rat("rat", 700, 720, 150, 150);
     rat.SetTexture("Assets/rat.png", 150, 150);
+    rat.SetHoverText("Looks like that rat is sitting on something…");
     rat.SetItemCondition("rat_food");
     cage.AddObject(rat);
 
     scene_manager.AddScene(cage);
+
+    //----
+
+    Scene glass_container = new Scene("glass_container");                                                                                  //changes for rat_food location
+
+    GameObject glass_container_bg = new GameObject("glass_container_bg", width/2, height/2, 0, 0);
+    glass_container_bg.SetTexture("Assets/glass_container.png");
+    glass_container.AddObject(glass_container_bg);
+
+    Collectable rat_food = new Collectable("rat_food", 600, 900, 100, 64);
+    rat_food.SetTexture("Assets/rat_food.png", 100, 64);
+    rat_food.SetHoverText("This smells bad… Who would eat this?");                                                                              //add hover_text rat_food
+    glass_container.AddObject(rat_food);
+
+    SceneChanger glass_container_arrow_d = new SceneChanger("door", "glass_container_arrow_d", width/2, height-200, 70, 50);
+    glass_container_arrow_d.SetTexture("Assets/arrowdown.png", 70, 50);
+    glass_container.AddObject(cabinet_arrow_d);
+
+    scene_manager.AddScene(glass_container);
 
     //----
 
