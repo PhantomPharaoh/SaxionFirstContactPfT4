@@ -1,7 +1,7 @@
 //***********************************************
 //*       Saxion First Contact Project          *
 //*              ECM1V.Pf_Team_4                *
-//*               version 0.009                 *
+//*               version 0.010                 *
 //*            authors Soma, Marvin             *
 //*                                             *
 //***********************************************
@@ -10,7 +10,7 @@
 SceneManager scene_manager;
 InventoryManager inventory;
 
-boolean debug = false;
+boolean debug = true;
 
 HashMap<String, Boolean> conditions = new HashMap<String, Boolean>();
 
@@ -55,7 +55,7 @@ void setup(){
     green_tubes_arrow_l.SetTexture("Assets/arrowleft.png", 50, 70);
     green_tubes.AddObject(green_tubes_arrow_l);
 
-     Collectable syringe_empty = new Collectable("syringe_empty", 200, 700, 52, 100);
+    Syringe syringe_empty = new Syringe("syringe_empty", 200, 700, 52, 100);
     syringe_empty.SetTexture("Assets/syringe_empty.png", 52, 100);
     syringe_empty.SetHoverText("An empty syringe…");
     syringe_empty.SetCondition("is_tube_broken");
@@ -64,38 +64,6 @@ void setup(){
     Tube tube = new Tube("tube", 200, 700, 52, 100);
     tube.SetItemCondition("hammer");
     green_tubes.AddObject(tube);
-
-    //item sests
-/*
-    Collectable i1 = new Collectable("i1", 0, 0, 50, 50);
-    i1.SetTexture("Assets/key.png", 50, 50);
-    green_tubes.AddObject(i1);
-
-    Collectable i2 = new Collectable("i2", 60, 0, 50, 50);
-    i2.SetTexture("Assets/key.png", 50, 50);
-    green_tubes.AddObject(i2);
-
-    Collectable i3 = new Collectable("i3", 120, 0, 50, 50);
-    i3.SetTexture("Assets/key.png", 50, 50);
-    green_tubes.AddObject(i3);
-
-    Collectable i4 = new Collectable("i4", 180, 0, 50, 50);
-    i4.SetTexture("Assets/key.png", 50, 50);
-    green_tubes.AddObject(i4);
-
-    Collectable i5 = new Collectable("i5", 240, 0, 50, 50);
-    i5.SetTexture("Assets/key.png", 50, 50);
-    green_tubes.AddObject(i5);
-
-    Collectable i6 = new Collectable("i6", 300, 0, 50, 50);
-    i6.SetTexture("Assets/key.png", 50, 50);
-    green_tubes.AddObject(i6);
-*/
-    //end of item tests
-
-
-
-
 
     scene_manager.AddScene(green_tubes);
 
@@ -137,7 +105,7 @@ void setup(){
     door.AddObject(door_arrow_l);
 
     SceneChanger cabinet_lock = new SceneChanger("cabinet", "cabinet_lock", 1600, 870, 200, 200);
-    cabinet_lock.SetItemCondition("serum");
+    cabinet_lock.SetItemCondition("syringe_filled");
     cabinet_lock.SetHoverText("This drawer can only be opened by a fingerprint… Maybe I can find another way to get through the lock…");    //add hover_text for drawer/cabinet(locked)
     door.AddObject(cabinet_lock);
 
@@ -166,12 +134,10 @@ void setup(){
     SceneChanger desk_arrow_l = new SceneChanger("door", "desk_arrow_l", 100, height/2, 50, 70);
     desk_arrow_l.SetTexture("Assets/arrowleft.png", 50, 70);
     desk.AddObject(desk_arrow_l);
-
-    Collectable serum = new Collectable("serum", 700, 550, 87, 100);
-    serum.SetTexture("Assets/serum.png", 87, 100);
-    serum.SetHoverText("How can I pour this acid in a safe way…?"); 
-    serum.SetItemTexture("Assets/syringe_filled.png");
-    serum.SetItemCondition("syringe_empty");
+    
+    Serum serum = new Serum("serum", 700, 560, 87, 100);
+    serum.SetTexture("Assets/acid.png", 87, 100);
+    serum.SetHoverText("How can I pour this acid in a safe way…?");
     desk.AddObject(serum);
 
     SceneChanger cage_lock = new SceneChanger("cage", "cage_lock", 250, 500, 200, 200);
@@ -203,7 +169,7 @@ void setup(){
 
     Scene cabinet = new Scene("cabinet");
 
-    GameObject cabinet_bg = new GameObject("cabinet_bg", width/2, height/2, 0, 0);
+    GameObject cabinet_bg = new GameObject("cabinet_bg", width/2, height/2-200, 0, 0);
     cabinet_bg.SetTexture("Assets/cabinet.png");
     cabinet.AddObject(cabinet_bg);
 
@@ -215,7 +181,7 @@ void setup(){
     rat_food.SetTexture("Assets/rat_food.png", 300, 200);
     cabinet.AddObject(rat_food);*///*REMOVED* rat_food collectable to gllas_container Scene
 
-    Collectable key = new Collectable("key", 1300, 950, 77, 100);
+    Collectable key = new Collectable("key", 1300, 700, 77, 100);
     key.SetTexture("Assets/key.png", 77, 100);
     key.SetHoverText("Where there’s a key there’s a lock…");
     cabinet.AddObject(key);
@@ -250,7 +216,7 @@ void setup(){
     glass_container_bg.SetTexture("Assets/glass_container.png");
     glass_container.AddObject(glass_container_bg);
 
-    Collectable rat_food = new Collectable("rat_food", 600, 900, 100, 64);
+    Collectable rat_food = new Collectable("rat_food", 600, 800, 100, 64);
     rat_food.SetTexture("Assets/rat_food.png", 100, 64);
     rat_food.SetHoverText("This smells bad… Who would eat this?");                                                                              //add hover_text rat_food
     glass_container.AddObject(rat_food);
@@ -276,6 +242,9 @@ void setup(){
 }
 
 void draw(){
+    fill(255);
+    noStroke();
+    rect(0, 0, 1920, 1080);
     scene_manager.GetCurrentScene().Update();
     inventory.DrawInventory();
 }

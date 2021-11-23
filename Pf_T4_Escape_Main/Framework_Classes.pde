@@ -1,7 +1,7 @@
 //***********************************************
 //*       Saxion First Contact Project          *
 //*              ECM1V.Pf_Team_4                *
-//*               version 0.009                 *
+//*               version 0.010                 *
 //*            authors Soma, Marvin             *
 //*                                             *
 //***********************************************
@@ -51,7 +51,7 @@ class Scene{
                             if (i.item_needed == inventory.GetSelectedItem().name) {
                                 i.item_needed = "";
                                 i.Clicked();
-                                inventory.RemoveSelectedItem();
+                                //inventory.RemoveSelectedItem();
                             }
                         }
                     }
@@ -109,6 +109,14 @@ class GameObject{
             fill(0, 0, 255, 50);
             noStroke();
             rect(position.x - size.x/2, position.y - size.y/2, size.x, size.y);
+        }
+
+        if (hover_text != "") {
+            if (mouseX >= position.x - size.x/2 && mouseX <= position.x + size.x/2){
+                if (mouseY >= position.y - size.y/2 && mouseY <= position.y + size.y/2){
+                    inventory.SetDialogue(hover_text);
+                }
+            }
         }
 
     }
@@ -219,11 +227,15 @@ class InventoryManager{
     private PImage inventory_image;
     private PImage textbox_image;
     private PImage highlight_image;
+    private String current_text = "How do I get out of here?";
+    private PFont font;
+    
 
     public InventoryManager(){
         inventory_image = loadImage("Assets/inventory.png");
         textbox_image = loadImage("Assets/textbox.png");
         highlight_image = loadImage("Assets/highlight.png");
+        //font = createFont("Assets/CR55.ttf", 20);
     }
 
     public void AddItem(String name, PImage texture){
@@ -239,6 +251,15 @@ class InventoryManager{
         }
     }
 
+    public boolean HasItem(String item_name){
+        for (InventoryItem i : items) {
+            if (i.name == item_name){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void RemoveSelectedItem(){
         items.remove(selected_index);
         selected_index = -1;
@@ -246,7 +267,6 @@ class InventoryManager{
 
     public void DrawInventory(){
         image(inventory_image, 1400, 1000);
-        image(textbox_image, 500, 1000);
         if (selected_index != -1){
             image(highlight_image, 1605+selected_index*165, 1012);//these values are fine-tuned to fit the inventory
         }
@@ -255,13 +275,20 @@ class InventoryManager{
             image(items.get(i).texture, 1400+(i-2)*165, 1000, 70, 70);
         }
 
+        image(textbox_image, 500, 1000);
+        //textFont(font);
+        fill(255);
+        textSize(30);
+        text(current_text, 100, 1000);
+
+
         //rect(970, 910, 860, 170); // inventory hitbox
     }
 
     public boolean IsInventoryClick(){
         if (mouseY >= 910){
-            if (mouseX >=  970 && mouseX <= 1795) {
-                for (int i = 0; i < 5; ++i) {
+            if (mouseX >=  970 && mouseX <= 1795){
+                for (int i = 0; i < 5; ++i){
                     if (mouseX >= 970+i*165 && mouseX <= (970+i*165)+165){
                         if (i < items.size()) selected_index = i;
                         break;
@@ -272,6 +299,10 @@ class InventoryManager{
             }
         }
         return false;
+    }
+
+    public void SetDialogue(String text){
+        current_text = text;
     }
 
 }
