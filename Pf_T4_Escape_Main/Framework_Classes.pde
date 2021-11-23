@@ -1,7 +1,7 @@
 //***********************************************
 //*       Saxion First Contact Project          *
 //*              ECM1V.Pf_Team_4                *
-//*               version 0.011                 *
+//*               version 0.012                 *
 //*            authors Soma, Marvin             *
 //*                                             *
 //***********************************************
@@ -172,6 +172,7 @@ class SceneChanger extends GameObject{
 
 class Collectable extends GameObject{
     public PImage item_texture = null;
+    public String item_inventory_text = "";
 
     public Collectable(String name, int pos_x, int pos_y, int size_x, int size_y){
         super(name, pos_x, pos_y, size_x, size_y);
@@ -180,13 +181,17 @@ class Collectable extends GameObject{
     @Override
     public void Clicked(){
         scene_manager.GetCurrentScene().MarkForRemoval(name);
-        if (item_texture != null) inventory.AddItem(name, item_texture);
-        else inventory.AddItem(name, texture);
+        if (item_texture != null) inventory.AddItem(name, item_texture, item_inventory_text);
+        else inventory.AddItem(name, texture, item_inventory_text);
         
     }
 
     public void SetItemTexture(String image_path){
         item_texture = loadImage(image_path);
+    }
+
+    public void SetInventoryText(String item_inventory_text){
+        this.item_inventory_text = item_inventory_text;
     }
 
 }
@@ -238,8 +243,8 @@ class InventoryManager{
         //font = createFont("Assets/CR55.ttf", 20);
     }
 
-    public void AddItem(String name, PImage texture){
-        items.add(new InventoryItem(name, texture));
+    public void AddItem(String name, PImage texture, String item_inventory_text){
+        items.add(new InventoryItem(name, texture, item_inventory_text));
     }
 
     public InventoryItem GetSelectedItem(){
@@ -290,7 +295,10 @@ class InventoryManager{
             if (mouseX >=  970 && mouseX <= 1795){
                 for (int i = 0; i < 5; ++i){
                     if (mouseX >= 970+i*165 && mouseX <= (970+i*165)+165){
-                        if (i < items.size()) selected_index = i;
+                        if (i < items.size()){
+                            selected_index = i;
+                            if (items.get(i).hover_text != "") inventory.SetDialogue(items.get(i).hover_text);
+                        }
                         break;
                     }
                 }
@@ -310,9 +318,15 @@ class InventoryManager{
 class InventoryItem{
     public String name;
     public PImage texture;
+    public String hover_text = "";
 
     public InventoryItem(String name, PImage texture){
         this.name = name;
         this.texture = texture;
+    }
+    public InventoryItem(String name, PImage texture, String hover_text){
+        this.name = name;
+        this.texture = texture;
+        this.hover_text = hover_text;
     }
 }

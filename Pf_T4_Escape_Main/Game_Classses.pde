@@ -1,7 +1,7 @@
 //***********************************************
 //*       Saxion First Contact Project          *
 //*              ECM1V.Pf_Team_4                *
-//*               version 0.011                 *
+//*               version 0.012                 *
 //*            authors Soma, Marvin             *
 //*                                             *
 //***********************************************
@@ -49,12 +49,12 @@ class Syringe extends GameObject{
     public void Clicked(){
         if (!inventory.HasItem("serum")){
             scene_manager.GetCurrentScene().MarkForRemoval(name);
-            inventory.AddItem(name, texture);
+            inventory.AddItem(name, texture, "");
         }
         else{
             if (inventory.GetSelectedItem().name == "serum"){
                 scene_manager.GetCurrentScene().MarkForRemoval(name);
-                inventory.AddItem("syringe_filled", filled_texture);
+                inventory.AddItem("syringe_filled", filled_texture, "");
                 inventory.RemoveSelectedItem();
             }
         }
@@ -72,12 +72,12 @@ class Serum extends GameObject{
     public void Clicked(){
         if (!inventory.HasItem("syringe_empty")){
             scene_manager.GetCurrentScene().MarkForRemoval(name);
-            inventory.AddItem(name, texture);
+            inventory.AddItem(name, texture, "");
         }
         else{
             if (inventory.GetSelectedItem().name == "syringe_empty"){
                 scene_manager.GetCurrentScene().MarkForRemoval(name);
-                inventory.AddItem("syringe_filled", filled_texture);
+                inventory.AddItem("syringe_filled", filled_texture, "");
                 inventory.RemoveSelectedItem();
             }
         }

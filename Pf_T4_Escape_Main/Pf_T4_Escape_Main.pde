@@ -1,7 +1,7 @@
 //***********************************************
 //*       Saxion First Contact Project          *
 //*              ECM1V.Pf_Team_4                *
-//*               version 0.011                 *
+//*               version 0.012                 *
 //*            authors Soma, Marvin             *
 //*                                             *
 //***********************************************
