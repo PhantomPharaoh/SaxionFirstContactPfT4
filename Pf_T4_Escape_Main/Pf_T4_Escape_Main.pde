@@ -9,8 +9,9 @@
 
 SceneManager scene_manager;
 InventoryManager inventory;
+PImage vignette;
 
-boolean debug = true;
+boolean debug = false;
 
 HashMap<String, Boolean> conditions = new HashMap<String, Boolean>();
 
@@ -21,6 +22,7 @@ void setup(){
 
     scene_manager = new SceneManager();
     inventory = new InventoryManager();
+    vignette = loadImage("Assets/vignette.png");
 
     conditions.put("is_tube_broken", false);
     conditions.put("is_rat_fed", false);
@@ -57,7 +59,7 @@ void setup(){
 
     Syringe syringe_empty = new Syringe("syringe_empty", 200, 700, 52, 100);
     syringe_empty.SetTexture("Assets/syringe_empty.png", 52, 100);
-    syringe_empty.SetHoverText("An empty syringe…");
+    syringe_empty.SetHoverText("A syringe... How could I get it out of there?");
     syringe_empty.SetCondition("is_tube_broken");
     green_tubes.AddObject(syringe_empty);
 
@@ -106,7 +108,7 @@ void setup(){
 
     SceneChanger cabinet_lock = new SceneChanger("cabinet", "cabinet_lock", 1600, 870, 200, 200);
     cabinet_lock.SetItemCondition("syringe_filled");
-    cabinet_lock.SetHoverText("This drawer can only be opened by a fingerprint… Maybe I can find another way to get through the lock…");    //add hover_text for drawer/cabinet(locked)
+    cabinet_lock.SetHoverText("This drawer can only be opened by a fingerprint…\nMaybe I can find another way to get through the lock…");    //add hover_text for drawer/cabinet(locked)
     door.AddObject(cabinet_lock);
 
     SceneChanger code_lock = new SceneChanger("win_screen", "code_lock", 780, 620, 100, 200);
@@ -241,11 +243,13 @@ void setup(){
 
 }
 
+
 void draw(){
     fill(255);
     noStroke();
     rect(0, 0, 1920, 1080);
     scene_manager.GetCurrentScene().Update();
+    image(vignette, width/2, height/2);
     inventory.DrawInventory();
 }
 
